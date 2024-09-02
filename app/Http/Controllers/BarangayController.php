@@ -12,7 +12,10 @@ class BarangayController extends Controller
      */
     public function index()
     {
-        //
+        $barangays = Barangay::orderBy('name')->get();
+
+        $data = compact('barangays');
+        return view('barangays.index',$data);
     }
 
     /**
