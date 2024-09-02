@@ -17,12 +17,12 @@
         <!-- Sweet Alerts js -->
         <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
         <!-- crm leads init -->
-        <script src="assets/js/pages/crm-leads.init.js"></script>
+        <script src="assets/js/app/provinces.init.js"></script>
 
         <!-- App js -->
         <script src="assets/js/app.js"></script>
 
-        <script>
+       {{--  <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Event listener for edit button click
                 document.querySelectorAll('.edit-item-btn').forEach(function(button) {
@@ -92,7 +92,7 @@
                         });
                 });
             });
-        </script>
+        </script> --}}
     </x-slot>
 
     <!-- start page title -->
@@ -127,8 +127,7 @@
                         </div>
                         <div class="col-sm-auto ms-auto">
                             <div class="hstack gap-2">
-                                {{-- <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample"><i class="ri-filter-3-line align-bottom me-1"></i> Fliters</button> --}}
+                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
                                 <button type="button" class="btn btn-soft-warning add-btn" data-bs-toggle="modal"
                                     id="create-btn" data-bs-target="#showModal"><i
                                         class="ri-add-line align-bottom me-1"></i> Add province</button>
@@ -250,70 +249,24 @@
                                         <input type="hidden" id="id-field" />
                                         <div class="row g-3">
                                             <div class="col-lg-12">
-                                                nhrwaq
                                                 <div>
-                                                    <label for="leadname-field" class="form-label">Name</label>
-                                                    <input type="text" id="leadname-field" class="form-control"
-                                                        placeholder="Enter Name" required />
+                                                    <label for="province_name-field" class="form-label">Name</label>
+                                                    <input type="text" id="province_name-field" class="form-control"
+                                                        placeholder="Enter Province Name" required />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="company_name-field" class="form-label">Company
-                                                        Name</label>
-                                                    <input type="text" id="company_name-field"
+                                                    <label for="province_region-field" class="form-label">Region</label>
+                                                    <input type="text" id="province_region-field"
                                                         class="form-control" placeholder="Enter company name"
                                                         required />
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div>
-                                                    <label for="leads_score-field" class="form-label">Leads
-                                                        Score</label>
-                                                    <input type="text" id="leads_score-field" class="form-control"
-                                                        placeholder="Enter lead score" required />
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div>
-                                                    <label for="phone-field" class="form-label">Phone</label>
-                                                    <input type="text" id="phone-field" class="form-control"
-                                                        placeholder="Enter phone no" required />
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="location-field" class="form-label">Location</label>
-                                                    <input type="text" id="location-field" class="form-control"
-                                                        placeholder="Enter location" required />
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="taginput-choices" class="form-label">Tags</label>
-                                                    <select class="form-control" name="taginput-choices"
-                                                        id="taginput-choices" multiple>
-                                                        <option value="Lead">Lead</option>
-                                                        <option value="Partner">Partner</option>
-                                                        <option value="Exiting">Exiting</option>
-                                                        <option value="Long-term">Long-term</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="date-field" class="form-label">Created Date</label>
-                                                    <input type="date" id="date-field" class="form-control"
-                                                        data-provider="flatpickr" data-date-format="d M, Y"
-                                                        placeholder="Select Date" required />
-                                                </div>
-                                            </div>
-                                            <!--end col-->
+
+
                                         </div>
                                         <!--end row-->
                                     </div>
@@ -322,8 +275,7 @@
                                             <button type="button" class="btn btn-light"
                                                 data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-success" id="add-btn">Add
-                                                leads</button>
-                                            <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                                Province</button>
                                         </div>
                                     </div>
                                 </form>
@@ -365,200 +317,6 @@
                     <!--end modal -->
 
 
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
-                        aria-labelledby="offcanvasExampleLabel">
-                        <div class="offcanvas-header bg-light">
-                            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Leads Fliters</h5>
-                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                        </div>
-                        <!--end offcanvas-header-->
-                        <form action="" class="d-flex flex-column justify-content-end h-100">
-                            <div class="offcanvas-body">
-                                <div class="mb-4">
-                                    <label for="datepicker-range"
-                                        class="form-label text-muted text-uppercase fw-semibold mb-3">Date</label>
-                                    <input type="date" class="form-control" id="datepicker-range"
-                                        data-provider="flatpickr" data-range="true" placeholder="Select date">
-                                </div>
-                                <div class="mb-4">
-                                    <label for="country-select"
-                                        class="form-label text-muted text-uppercase fw-semibold mb-3">Country</label>
-                                    <select class="form-control" data-choices data-choices-multiple-remove="true"
-                                        name="country-select" id="country-select" multiple>
-                                        <option value="">Select country</option>
-                                        <option value="Argentina">Argentina</option>
-                                        <option value="Belgium">Belgium</option>
-                                        <option value="Brazil" selected>Brazil</option>
-                                        <option value="Colombia">Colombia</option>
-                                        <option value="Denmark">Denmark</option>
-                                        <option value="France">France</option>
-                                        <option value="Germany">Germany</option>
-                                        <option value="Mexico">Mexico</option>
-                                        <option value="Russia">Russia</option>
-                                        <option value="Spain">Spain</option>
-                                        <option value="Syria">Syria</option>
-                                        <option value="United Kingdom" selected>United Kingdom</option>
-                                        <option value="United States of America">United States of
-                                            America</option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="status-select"
-                                        class="form-label text-muted text-uppercase fw-semibold mb-3">Status</label>
-                                    <div class="row g-2">
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                                    value="option1">
-                                                <label class="form-check-label" for="inlineCheckbox1">New
-                                                    Leads</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                                    value="option2">
-                                                <label class="form-check-label" for="inlineCheckbox2">Old
-                                                    Leads</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
-                                                    value="option3">
-                                                <label class="form-check-label" for="inlineCheckbox3">Loss
-                                                    Leads</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox4"
-                                                    value="option4">
-                                                <label class="form-check-label" for="inlineCheckbox4">Follow
-                                                    Up</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="leadscore"
-                                        class="form-label text-muted text-uppercase fw-semibold mb-3">Lead
-                                        Score</label>
-                                    <div class="row g-2 align-items-center">
-                                        <div class="col-lg">
-                                            <input type="number" class="form-control" id="leadscore"
-                                                placeholder="0">
-                                        </div>
-                                        <div class="col-lg-auto">
-                                            To
-                                        </div>
-                                        <div class="col-lg">
-                                            <input type="number" class="form-control" id="leadscore"
-                                                placeholder="0">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="leads-tags"
-                                        class="form-label text-muted text-uppercase fw-semibold mb-3">Tags</label>
-                                    <div class="row g-3">
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="marketing"
-                                                    value="marketing">
-                                                <label class="form-check-label" for="marketing">Marketing</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="management"
-                                                    value="management">
-                                                <label class="form-check-label" for="management">Management</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="business"
-                                                    value="business">
-                                                <label class="form-check-label" for="business">Business</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="investing"
-                                                    value="investing">
-                                                <label class="form-check-label" for="investing">Investing</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="partner"
-                                                    value="partner">
-                                                <label class="form-check-label" for="partner">Partner</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="lead"
-                                                    value="lead">
-                                                <label class="form-check-label" for="lead">Leads</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="sale"
-                                                    value="sale">
-                                                <label class="form-check-label" for="sale">Sale</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="owner"
-                                                    value="owner">
-                                                <label class="form-check-label" for="owner">Owner</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="banking"
-                                                    value="banking">
-                                                <label class="form-check-label" for="banking">Banking</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="banking"
-                                                    value="banking">
-                                                <label class="form-check-label" for="banking">Exiting</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="banking"
-                                                    value="banking">
-                                                <label class="form-check-label" for="banking">Finance</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="banking"
-                                                    value="banking">
-                                                <label class="form-check-label" for="banking">Fashion</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end offcanvas-body-->
-                            <div class="offcanvas-footer border-top p-3 text-center hstack gap-2">
-                                <button class="btn btn-light w-100">Clear Filter</button>
-                                <button type="submit" class="btn btn-primary w-100">Filters</button>
-                            </div>
-                            <!--end offcanvas-footer-->
-                        </form>
-                    </div>
-                    <!--end offcanvas-->
 
                 </div>
             </div>
