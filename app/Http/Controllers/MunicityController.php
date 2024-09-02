@@ -12,7 +12,10 @@ class MunicityController extends Controller
      */
     public function index()
     {
-        //
+        $municities = Municity::orderBy('name')->get();
+
+        $data = compact('municities');
+        return view('municities.index',$data);
     }
 
     /**
