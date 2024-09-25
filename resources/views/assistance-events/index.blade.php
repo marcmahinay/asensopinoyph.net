@@ -115,7 +115,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card" id="assistanceTypeList">
+            <div class="card" id="eventList">
                 <div class="card-header border-0">
 
                     <div class="row g-4 align-items-center">
@@ -171,7 +171,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
-                                    @foreach ($events as $event)
+                                   @foreach ($events as $event)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
@@ -179,18 +179,20 @@
                                                         value="{{$event->id}}">
                                                 </div>
                                             </th>
-                                            <td class="event_date">@if($event->event_date) {{ \Carbon\Carbon::parse($event->event_date)->format('M d, Y') }} @endif</td>
-                                            <td class="event_name" style="display:none;">{{$event->id}}</td>
-                                            <td class="event_venue">{{$event->event_name}}</td>
-                                            <td class="assistance_type_name">{{$event->venue}}</td>
-                                            <td class="assistance_type_description text-end">{{ number_format($event->amount, 2) }}</td>
+                                            <td class="event_date" style="display:none;">{{$event->event_date}}</td>
+                                            <td class="event_date_fmt">@if($event->event_date) {{ \Carbon\Carbon::parse($event->event_date)->format('M d, Y') }} @endif</td>
+                                            <td class="event_id" style="display:none;">{{$event->id}}</td>
+                                            <td class="event_name">{{$event->event_name}}</td>
+                                            <td class="event_venue">{{$event->venue}}</td>
+                                            <td class="event_amount text-end">{{ number_format($event->amount, 2) }}</td>
                                             <td class="assistance_type_name">{{$event->assistanceType->name}}</td>
+                                            <td class="event_notes" style="display:none;">{{$event->notes}}</td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="{{ route('assistance-types.show', $event->id) }}"><i
+                                                        <a href="{{ route('assistance-events.show', $event->id) }}"><i
                                                                 class="ri-eye-fill align-bottom text-muted"></i></a>
                                                     </li>
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
@@ -199,6 +201,13 @@
                                                             data-bs-toggle="modal"><i
                                                                 class="ri-pencil-fill align-bottom text-muted"></i></a>
                                                     </li>
+                                                    @if(\Carbon\Carbon::parse($event->event_date)->isToday())
+                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                        data-bs-trigger="hover" data-bs-placement="top" title="Scan QR Code">
+                                                        <a href="{{route('qr.qrScanner')}}" data-id="{{$event->id}}"><i
+                                                                class=" ri-qr-code-line align-bottom text-muted"></i></a>
+                                                    </li>
+                                                    @endif
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top"
                                                         title="Delete">
@@ -255,8 +264,8 @@
                                         <div class="row g-3">
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="event_type-field" class="form-label">Assistance Type</label>
-                                                    <select name="event_type-field" class="form-select" required>
+                                                    <label for="assistance_type_name-field" class="form-label">Assistance Type</label>
+                                                    <select id="assistance_type_name-field" name="assistance_type_name-field" class="form-select" required>
                                                     @foreach($assistanceTypes as $assistance)
                                                         <option value="{{$assistance->id}}">{{$assistance->name}}</option>
                                                     @endforeach
@@ -288,6 +297,15 @@
                                                     <input type="date" id="event_date-field"
                                                         class="form-control" placeholder="Enter Date"
                                                         required />
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="event_amount-field" class="form-label">Amount</label>
+                                                    <input type="number" id="event_amount-field"
+                                                        class="form-control" placeholder="Enter Amount"/>
                                                 </div>
                                             </div>
                                             <!--end col-->

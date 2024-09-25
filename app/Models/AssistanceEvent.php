@@ -27,4 +27,12 @@ class AssistanceEvent extends Model
     {
         return $this->belongsTo(AssistanceType::class);
     }
+
+    public function assistanceReceived()
+    {
+        return $this->hasMany(AssistanceReceived::class);
+    }
+
+
+
 }
