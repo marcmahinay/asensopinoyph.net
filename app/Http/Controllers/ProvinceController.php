@@ -16,7 +16,7 @@ class ProvinceController extends Controller
         $provinces = Province::orderBy('name')->get();
 
         $data = compact('provinces');
-        return view('provinces.index',$data);
+        return view('provinces.index', $data);
     }
 
     /**
@@ -32,7 +32,41 @@ class ProvinceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate incoming request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'region' => 'required|string|max:255',
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            // Create a new province
+            $province = new Province();
+            $province->name = $request->input('name');
+            $province->region = $request->input('region');
+            $province->save();
+
+            // Return a successful JSON response
+            return response()->json([
+                'success' => true,
+                'message' => 'Province created successfully.',
+                'data' => $province
+            ], 201);
+        } catch (\Exception $e) {
+            // Return an error JSON response
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while creating the province.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -40,7 +74,12 @@ class ProvinceController extends Controller
      */
     public function show(Province $province)
     {
-        //
+        // Load municipalities related to this province, sorted by name
+        $province->load(['municipalities' => function($query) {
+            $query->orderBy('name');
+        }]);
+
+        return view('provinces.show', compact('province'));
     }
 
     /**
@@ -103,11 +142,43 @@ class ProvinceController extends Controller
         }
     }
 
+    public function municities(Province $province)
+    {
+        try {
+            return response()->json([
+                'success' => true,
+                'municities' => $province->municipalities
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching municipalities.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Province $province)
     {
-        //
+        try {
+            // Delete the province
+            $province->delete();
+
+            // Return a successful JSON response
+            return response()->json([
+                'success' => true,
+                'message' => 'Province deleted successfully.'
+            ], 200);
+        } catch (\Exception $e) {
+            // Return an error JSON response
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while deleting the province.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
