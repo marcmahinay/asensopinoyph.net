@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('voucher_id')->constrained();
             $table->string('code')->unique();
-            $table->foreignId('beneficiary_id')->nullable()->constrained();
+            $table->foreignId('beneficiary_id')->constrained();
             $table->boolean('is_redeemed')->default(false);
-            $table->dateTime('redeemed_at');
-            $table->string('redemption_location');
+            $table->timestamp('redeemed_at')->nullable();
+            $table->string('redemption_location')->nullable();
             $table->timestamps();
+
+            $table->unique(['voucher_id', 'beneficiary_id']);
         });
     }
 
