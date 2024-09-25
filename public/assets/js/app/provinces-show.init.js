@@ -3,25 +3,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const addBtn = document.getElementById("add-btn");
     const closeModalBtn = document.getElementById("close-modal");
     const closeModalDelete = document.getElementById("btn-close");
-    var provinceIdField = document.getElementById("id-field");
-    var provinceNameField = document.getElementById("province_name-field");
-    var provinceRegionField = document.getElementById("province_region-field");
+    var municityIdField = document.getElementById("id-field");
+    var provinceIdField = document.getElementById("province_id-field");
+    var municityNameField = document.getElementById("municity_name-field");
+    var municityBrgyCount = document.getElementById("municity_brgy_count-field");
     var removeBtns = document.getElementsByClassName("remove-item-btn"),
         editBtns = document.getElementsByClassName("edit-item-btn");
 
     var options = {
-        valueNames: ["province_id", "province_name", "province_region"],
-        page: 20,
+        valueNames: ["municity_id", "municity_name", "barangay_count"],
+        page: 10,
         pagination: true,
     };
 
-    var editlist = false;
 
-    count = 100;
-
-    var provinceList = new List("provinceList", options);
+    var municityList = new List("municityList", options);
     // Add event listener to reapply event listeners after pagination changes
-    provinceList.on("updated", function () {
+    municityList.on("updated", function () {
         refreshCallback();
     });
 
@@ -30,21 +28,21 @@ document.addEventListener("DOMContentLoaded", function () {
         .addEventListener("show.bs.modal", function (e) {
             e.relatedTarget.classList.contains("edit-item-btn")
                 ? ((document.getElementById("exampleModalLabel").innerHTML =
-                    "Edit Province"),
+                    "Edit Municipality/City"),
                     (document
                         .getElementById("showModal")
                         .querySelector(".modal-footer").style.display = "block"),
                     (document.getElementById("add-btn").innerHTML = "Update"))
                 : e.relatedTarget.classList.contains("add-btn")
                     ? ((document.getElementById("exampleModalLabel").innerHTML =
-                        "Add Province"),
+                        "Add Municipality/City"),
                         (document
                             .getElementById("showModal")
                             .querySelector(".modal-footer").style.display = "block"),
                         (document.getElementById("add-btn").innerHTML =
-                            "Add Province"))
+                            "Add Municipality/City"))
                     : ((document.getElementById("exampleModalLabel").innerHTML =
-                        "List Province"),
+                        "List Municipality/City"),
                         (document
                             .getElementById("showModal")
                             .querySelector(".modal-footer").style.display = "none"));
@@ -57,33 +55,30 @@ document.addEventListener("DOMContentLoaded", function () {
             var row = this.closest("tr");
 
             // Retrieve data from the table row
-            var provinceId = this.getAttribute("data-id"); // Province ID from data attribute
-            var provinceName = row
-                .querySelector(".province_name")
-                .textContent.trim(); // Province name from the row
-            var provinceRegion = row
-                .querySelector(".province_region")
-                .textContent.trim(); // Province region from the row
+            var municityId = this.getAttribute("data-id"); // Municipality/City ID from data attribute
+            var municityName = row
+                .querySelector(".municity_name")
+                .textContent.trim(); // Municipality/City name from the row
 
             // Populate the modal fields with the retrieved data
-            document.getElementById("id-field").value = provinceId;
-            document.getElementById("province_name-field").value = provinceName;
-            document.getElementById("province_region-field").value =
-                provinceRegion;
+            municityIdField.value = municityId;
+            municityNameField.value = municityName;
         });
+
     });
 
     // Event listener for edit button click
     document.querySelectorAll(".remove-item-btn").forEach(function (button) {
         button.addEventListener("click", function () {
-            var provinceId = this.getAttribute("data-id");
-            document.getElementById("delete-record").setAttribute("data-id", provinceId);
+            var municityId = this.getAttribute("data-id");
+            document.getElementById("delete-record").setAttribute("data-id", municityId);
         });
     });
 
     document.getElementById("delete-record").addEventListener("click", function () {
-        var provinceId = this.getAttribute("data-id");
-        deleteProvince(provinceId);
+        var municityId = this.getAttribute("data-id");
+        console.log(municityId);
+        deleteMunicity(municityId);
     });
 
     document
@@ -95,22 +90,22 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const provinceIdField = document.getElementById("id-field").value;
-        const provinceNameField = document.getElementById(
-            "province_name-field"
+        const provinceIdField = document.getElementById("province_id-field").value;
+        const municityNameField = document.getElementById(
+            "municity_name-field"
         ).value;
-        const provinceRegionField = document.getElementById(
-            "province_region-field"
+        const municityIdField = document.getElementById(
+            "municity_id-field"
         ).value;
         if (form.checkValidity()) {
-            if (provinceIdField !== "") {
-                updateProvince(
-                    provinceIdField,
-                    provinceNameField,
-                    provinceRegionField
+            if (municityIdField !== "") {
+                console.log(municityIdField, municityNameField);
+                updateMunicity(
+                    municityIdField,
+                    municityNameField
                 );
             } else {
-                addProvince(provinceNameField, provinceRegionField);
+                addMunicity(provinceIdField, municityNameField);
             }
         } else {
             e.preventDefault();
@@ -118,97 +113,40 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    function updateProvince(provinceId, provinceName, provinceRegion) {
+    function updateMunicity(municityId, municityName) {
         const csrfToken = document
             .querySelector('meta[name="csrf-token"]')
             .getAttribute("content");
 
-        fetch(`provinces/${provinceId}`, {
+        fetch(`/municities/${municityId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": csrfToken,
             },
             body: JSON.stringify({
-                id: provinceId,
-                name: provinceName,
-                region: provinceRegion,
+                id: municityId,
+                name: municityName,
             }),
         })
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
-                    provinceList.items.forEach(function (item) {
-                        if (item.values().province_id == provinceId) {
+                    municityList.items.forEach(function (item) {
+                        if (item.values().municity_id == municityId) {
                             item.values({
-                                province_id: provinceId,
-                                province_name: provinceName,
-                                province_region: provinceRegion,
+                                municity_id: municityId,
+                                municity_name: municityName,
                             });
                         }
                     });
-                    closeModalBtn.click();
-                    clearFields();
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Province updated successfully!",
-                        showConfirmButton: false,
-                        timer: 2000,
-                        showCloseButton: true,
-                    });
-                } else {
-                    Swal.fire({
-                        position: "center",
-                        icon: "error",
-                        title: "Failed to update province!",
-                        showConfirmButton: true,
-                    });
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                Swal.fire({
-                    position: "center",
-                    icon: "error",
-                    title: "Failed to update province!",
-                    showConfirmButton: true,
-                });
-            });
-    }
-
-    function addProvince(provinceName, provinceRegion) {
-        const csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content");
-        fetch("/provinces", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-            },
-            body: JSON.stringify({
-                name: provinceName,
-                region: provinceRegion,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    console.log(data.data.id);
-                    provinceList.add({
-                        province_id: data.data.id,
-                        province_name: provinceName,
-                        province_region: provinceRegion,
-                    });
-                    provinceList.sort("province_name", { order: "asc" });
                     closeModalBtn.click();
                     clearFields();
                     refreshCallback();
                     Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Province inserted successfully!",
+                        title: "Municipality/City updated successfully!",
                         showConfirmButton: false,
                         timer: 2000,
                         showCloseButton: true,
@@ -217,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Swal.fire({
                         position: "center",
                         icon: "error",
-                        title: "Failed to insert province!",
+                        title: "Failed to update municipality/city!",
                         showConfirmButton: true,
                     });
                 }
@@ -227,13 +165,69 @@ document.addEventListener("DOMContentLoaded", function () {
                 Swal.fire({
                     position: "center",
                     icon: "error",
-                    title: "Failed to insert province!",
+                    title: "Failed to update municipality/city!",
                     showConfirmButton: true,
                 });
             });
     }
 
-    function deleteProvince(provinceId) {
+    function addMunicity(provinceId, municityName) {
+        const csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
+        fetch("/municities", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+            },
+            body: JSON.stringify({
+                province_id: provinceId,
+                name: municityName,
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log(data.data.id);
+                    municityList.add({
+                        municity_id: data.data.id,
+                        municity_name: municityName,
+                        barangay_count: 0,
+                    });
+                    municityList.sort("municity_name", { order: "asc" });
+                    closeModalBtn.click();
+                    clearFields();
+                    refreshCallback();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Municipality/City inserted successfully!",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        showCloseButton: true,
+                    });
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "Failed to insert municipality/city!",
+                        showConfirmButton: true,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "Failed to insert municipality/city!",
+                    showConfirmButton: true,
+                });
+            });
+    }
+
+    function deleteMunicity(municityId) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
         if (!csrfToken) {
@@ -241,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`provinces/${provinceId}`, {
+        fetch(`/municities/${municityId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -252,18 +246,18 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 if (data.success) {
                     // Remove the item from the list
-                    provinceList.remove('province_id', provinceId);
+                    municityList.remove('municity_id', municityId);
                     closeModalDelete.click();
                     refreshCallback();
                     Swal.fire(
                         'Deleted!',
-                        'Province has been deleted.',
+                        'Municipality/City has been deleted.',
                         'success'
                     );
                 } else {
                     Swal.fire(
                         'Error!',
-                        'Failed to delete province.',
+                        'Failed to delete municipality/city.',
                         'error'
                     );
                 }
@@ -272,19 +266,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error('Error:', error);
                 Swal.fire(
                     'Error!',
-                    'An error occurred while deleting the province.',
+                    'An error occurred while deleting the municipality/city.',
                     'error'
                 );
             });
     }
-    var provinceIdField = document.getElementById("id-field");
-    var provinceNameField = document.getElementById("province_name-field");
-    var provinceRegionField = document.getElementById("province_region-field");
+    var municityIdField = document.getElementById("municity_id-field");
+    var municityNameField = document.getElementById("municity_name-field");
 
     function clearFields() {
-        (provinceIdField.value = ""),
-            (provinceNameField.value = ""),
-            (provinceRegionField.value = "");
+        (municityIdField.value = ""),
+            (municityNameField.value = "");
     }
 
     function refreshCallback() {
@@ -295,39 +287,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 var row = this.closest("tr");
 
                 // Retrieve data from the table row
-                var provinceId = this.getAttribute("data-id"); // Province ID from data attribute
-                var provinceName = row
-                    .querySelector(".province_name")
-                    .textContent.trim(); // Province name from the row
-                var provinceRegion = row
-                    .querySelector(".province_region")
-                    .textContent.trim(); // Province region from the row
+                var municityId = this.getAttribute("data-id"); // Municipality/City ID from data attribute
+                var municityName = row
+                    .querySelector(".municity_name")
+                    .textContent.trim(); // Municipality/City name from the row
 
                 // Populate the modal fields with the retrieved data
-                document.getElementById("id-field").value = provinceId;
-                document.getElementById("province_name-field").value =
-                    provinceName;
-                document.getElementById("province_region-field").value =
-                    provinceRegion;
+                municityIdField.value = municityId;
+                municityNameField.value = municityName;
             });
 
-            //
         });
 
         document.querySelectorAll(".remove-item-btn").forEach(function (button) {
             button.addEventListener("click", function () {
-                var provinceId = this.getAttribute("data-id");
-                document.getElementById("delete-record").setAttribute("data-id", provinceId);
+                var municityId = this.getAttribute("data-id");
+                document.getElementById("delete-record").setAttribute("data-id", municityId);
             });
         });
 
     }
 
-    function clearFields() {
-        (provinceIdField.value = ""),
-            (provinceNameField.value = ""),
-            (provinceRegionField.value = "");
-    }
 
     refreshCallback();
 });
