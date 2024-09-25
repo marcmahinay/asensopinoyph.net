@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="pageTitle">
-       Barangays
+        Beneficiaries
     </x-slot>
 
     <x-slot name="headerScripts">
@@ -17,22 +17,23 @@
         <!-- Sweet Alerts js -->
         <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
         <!-- crm leads init -->
-        <script src="{{ asset('assets/js/app/barangays.init.js') }}"></script>
+        <script src="{{ asset('assets/js/app/beneficiaries.init.js') }}"></script>
 
         <!-- App js -->
         <script src="{{ asset('assets/js/app.js') }}"></script>
+
     </x-slot>
 
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Barangays</h4>
+                <h4 class="mb-sm-0">Beneficiaries</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item">Barangays</li>
-                        <li class="breadcrumb-item active">List of Barangay</li>
+                        <li class="breadcrumb-item">Beneficiary</li>
+                        <li class="breadcrumb-item active">List of Beneficiaries</li>
                     </ol>
                 </div>
 
@@ -43,23 +44,18 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card" id="barangayList">
+            <div class="card" id="beneficiaryList">
                 <div class="card-header border-0">
 
-                    <div class="row g-4 align-items-center">
-                        <div class="col-sm-3">
-                            <div class="search-box">
-                                <input type="text" class="form-control search" placeholder="Search for...">
-                                <i class="ri-search-line search-icon"></i>
+                    <div class="row g-6 align-items-center">
+                            <div class="col-sm-6">
+                                <div class="search-box">
+                                    <input type="text" class="form-control my-search" id="searchBeneficiary" placeholder="Search for Last Name, First Name, Middle Name">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
                             </div>
-                        </div>
                         <div class="col-sm-auto ms-auto">
                             <div class="hstack gap-2">
-                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
-                                        class="ri-delete-bin-2-line"></i></button>
-                                <button type="button" class="btn btn-soft-warning add-btn" data-bs-toggle="modal"
-                                    id="create-btn" data-bs-target="#showModal"><i
-                                        class="ri-add-line align-bottom me-1"></i> Add barangay</button>
                                 {{--  <span class="dropdown">
                                     <button class="btn btn-soft-primary btn-icon fs-14" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="ri-settings-4-line"></i>
@@ -81,7 +77,7 @@
                 <div class="card-body">
                     <div>
                         <div class="table-responsive table-card">
-                            <table class="table align-middle" id="provinceTable">
+                            <table class="table align-middle" id="beneficiaryTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col" style="width: 50px;">
@@ -91,52 +87,72 @@
                                             </div>
                                         </th>
 
-                                        <th class="" data-sort="barangay_name">Name</th>
-                                        <th class="" data-sort="municity_name">City/Municipality</th>
-                                        <th class="" data-sort="province_name">Province</th>
+                                        <th class="" data-sort="beneficiary_name">Name</th>
+                                        <th class="" data-sort="barangay_name">Barangay, City/Municipality, Province</th>
+                                        <th class="" data-sort="asenso_id">Asenso ID</th>
+                                        <th class="" data-sort="sex">Sex</th>
+                                        <th class="" data-sort="birth_date">Birth Date</th>
+                                        <th class="" data-sort="status">Status</th>
                                         <th class="" data-sort="action">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="list form-check-all">
-                                    @foreach ($barangays as $barangay)
+                                <tbody class="list form-check-all" id="beneficiaryTableBody">
+                                  {{--   @foreach ($beneficiaries as $beneficiary)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="chk_child"
-                                                        value="{{ $barangay->id }}">
+                                                        value="{{ $beneficiary->id }}">
                                                 </div>
                                             </th>
-                                            <td class="barangay_id" style="display:none;">{{ $barangay->id }}</td>
-                                            <td class="barangay_name">{{ $barangay->name }}</td>
-                                            <td class="municity_id" style="display:none;">{{ $barangay->municity->id }}</td>
-                                            <td class="municity_name">{{ $barangay->municity->name }}</td>
-                                            <td class="province_id" style="display:none;">{{ $barangay->municity->province->id }}</td>
-                                            <td class="province_name">{{ $barangay->municity->province->name }}</td>
+                                            <td class="beneficiary_id" style="display:none;">{{ $beneficiary->id }}
+                                            </td>
+                                            <td class="beneficiary_name">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="{{ $beneficiary->image_path ? asset($beneficiary->image_path) : 'https://via.placeholder.com/128?text=No+Image' }}"
+                                                            alt=""
+                                                            class="avatar-xxs rounded-circle image_src object-fit-cover">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2 name">
+                                                        {{ ucfirst(strtolower($beneficiary->last_name)) }}
+                                                        , {{ ucfirst(strtolower($beneficiary->first_name)) }}
+                                                        {{ substr($beneficiary->middle_name, 0, 1) . '.' }}</div>
+                                                </div>
+                                            </td>
+                                            <td class="barangay_name">{{ $beneficiary->barangay->name }}, {{ $beneficiary->barangay->municity->name }}, {{ $beneficiary->barangay->municity->province->name }}</td>
+                                            <td class="asenso_id">{{ $beneficiary->asenso_id }}</td>
+                                            <td class="sex">{{ $beneficiary->sex }}</td>
+                                            <td class="birth_date">{{ $beneficiary->birth_date }}</td>
+                                            <td class="status"><span class="badge {{ $beneficiary->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $beneficiary->status == 1 ? 'Active' : 'Inactive' }}
+                                                </span></td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="{{ route('barangays.show', $barangay->id) }}"><i
+                                                        <a href="{{ route('beneficiaries.show', $beneficiary->id) }}"><i
                                                                 class="ri-eye-fill align-bottom text-muted"></i></a>
                                                     </li>
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                    {{-- <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="Edit">
                                                         <a class="edit-item-btn" href="#showModal"
-                                                            data-id="{{ $barangay->id }}" data-bs-toggle="modal"><i
+                                                            data-id="{{ $beneficiary->id }}" data-bs-toggle="modal"><i
                                                                 class="ri-pencil-fill align-bottom text-muted"></i></a>
                                                     </li>
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Delete">
+                                                        data-bs-trigger="hover" data-bs-placement="top"
+                                                        title="Delete">
                                                         <a class="remove-item-btn" data-bs-toggle="modal"
-                                                            href="#deleteRecordModal" data-id="{{ $barangay->id }}">
+                                                            href="#deleteRecordModal" data-id="{{ $beneficiary->id }}">
                                                             <i class="ri-delete-bin-fill align-bottom text-muted"></i>
                                                         </a>
                                                     </li>
                                                 </ul>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
 
                                 </tbody>
                             </table>
@@ -153,7 +169,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <div class="pagination-wrap hstack gap-2">
+                           {{--  <div class="pagination-wrap hstack gap-2">
                                 <a class="page-item pagination-prev disabled" href="#">
                                     Previous
                                 </a>
@@ -161,72 +177,11 @@
                                 <a class="page-item pagination-next" href="#">
                                     Next
                                 </a>
-                            </div>
+                            </div> --}}
+                          {{--   {{ $beneficiaries->links('pagination::bootstrap-5') }} --}}
                         </div>
                     </div>
 
-
-                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content border-0">
-                                <div class="modal-header bg-primary-subtle p-3">
-                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close" id="close-modal"></button>
-                                </div>
-                                <form class="tablelist-form" autocomplete="off">
-                                    <div class="modal-body">
-                                        <input type="hidden" id="barangay_id-field" />
-                                        <div class="row g-3">
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="province_id-field" class="form-label">Province</label>
-                                                    <select id="province_id-field" class="form-select" required disabled>
-                                                        @foreach($provinces as $province)
-                                                            <option value="{{ $province->id }}">{{ $province->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="municity_id-field" class="form-label">City/Municipality</label>
-                                                    <select id="municity_id-field" class="form-select" required disabled>
-                                                        <option value="">Select City/Municipality</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-12">
-                                                <div>
-                                                    <label for="barangay_name-field" class="form-label">Barangay</label>
-                                                    <input type="text" id="barangay_name-field"
-                                                        class="form-control"
-                                                        placeholder="Enter Barangay Name" required />
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-
-
-
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="button" class="btn btn-light"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-success" id="add-btn">Add
-                                                Barangay</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end modal-->
 
                     <!-- Modal -->
                     <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1"
@@ -242,8 +197,8 @@
                                         colors="primary:#25a0e2,secondary:#00bd9d"
                                         style="width:90px;height:90px"></lord-icon>
                                     <div class="mt-4 text-center">
-                                        <h4 class="fs-semibold">You are about to delete a barangay?</h4>
-                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your barangaywill
+                                        <h4 class="fs-semibold">You are about to delete a beneficiary?</h4>
+                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your beneficiary will
                                             remove all of your information from our database.</p>
                                         <div class="hstack gap-2 justify-content-center remove">
                                             <button class="btn btn-link link-primary fw-medium text-decoration-none"
@@ -264,7 +219,6 @@
 
                 </div>
             </div>
-
         </div>
         <!--end col-->
     </div>

@@ -5,19 +5,19 @@
         <!-- Dark Logo-->
         <a href="index.html" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="assets/images/logo-sm.png" alt="" height="40">
+                <img src="{{asset("assets/images/logo-sm.png")}}" alt="" height="40">
             </span>
             <span class="logo-lg">
-                <img src="assets/images/logo-dark.png" alt="" height="70">
+                <img src="{{asset("assets/images/logo-dark.png")}}" alt="" height="70">
             </span>
         </a>
         <!-- Light Logo-->
         <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-                <img src="assets/images/logo-sm.png" alt="" height="22">
+                <img src="{{asset("assets/images/logo-sm.png")}}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="assets/images/logo-light.png" alt="" height="17">
+                <img src="{{asset("assets/images/logo-light.png")}}" alt="" height="17">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -38,7 +38,7 @@
                     </a>
                 </li> <!-- end Dashboard Menu -->
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarApps">
+                    <a class="nav-link menu-link" href="/beneficiaries">
                         <i data-feather="grid" class="icon-dual"></i> <span data-key="t-apps">Beneficiaries</span>
                     </a>
 
@@ -86,10 +86,21 @@
                 </li> --}}
 
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
-                        <i data-feather="heart" class="icon-dual"></i> <span data-key="t-layouts">Assistance</span> <span class="badge badge-pill bg-danger" data-key="t-hot">Hot</span>
+                    <a class="nav-link menu-link" href="#assistanceApps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="assistanceApps">
+                        <i data-feather="heart" class="icon-dual"></i> <span data-key="t-apps">Assistance</span>
                     </a>
-                </li> <!-- end Dashboard Menu -->
+                    <div class="collapse menu-dropdown" id="assistanceApps">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="/assistance-types" class="nav-link" data-key="t-calendar"> List </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/assistance-schedule" class="nav-link" data-key="t-chat"> Schedule </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
 
 
                 <li class="nav-item">

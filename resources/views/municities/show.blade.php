@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="pageTitle">
-       Barangays
+        {{ $municity->name }}
     </x-slot>
 
     <x-slot name="headerScripts">
@@ -17,22 +17,97 @@
         <!-- Sweet Alerts js -->
         <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
         <!-- crm leads init -->
-        <script src="{{ asset('assets/js/app/barangays.init.js') }}"></script>
+        <script src="{{ asset('assets/js/app/municities-show.init.js') }}"></script>
 
         <!-- App js -->
         <script src="{{ asset('assets/js/app.js') }}"></script>
+
+
+
+        {{--  <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Event listener for edit button click
+                document.querySelectorAll('.edit-item-btn').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        // Find the closest row to the clicked edit button
+                        var row = this.closest('tr');
+
+                        // Retrieve data from the table row
+                        var provinceId = this.getAttribute(
+                            'data-id'); // Province ID from data attribute
+                        var provinceName = row.querySelector('.province-name').textContent
+                            .trim(); // Province name from the row
+                        var provinceRegion = row.querySelector('.province-region').textContent
+                            .trim(); // Province region from the row
+
+                        // Populate the modal fields with the retrieved data
+                        document.getElementById('province-name').value = provinceName;
+                        document.getElementById('province-region').value = provinceRegion;
+
+                        // Store the province ID in a data attribute of the save button or modal
+                        document.getElementById('edit-province-form').setAttribute('data-id',
+                            provinceId);
+
+                        // Show the modal
+                        var editProvinceModal = new bootstrap.Modal(document.getElementById(
+                            'editProvince'));
+                        editProvinceModal.show();
+                    });
+                });
+
+                // Event listener for form submission
+                document.getElementById('edit-province-form').addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    var provinceId = this.getAttribute('data-id'); // Get province ID from data attribute
+
+                    // Prepare form data
+                    var formData = {
+                        _method: 'PUT', // Specify the HTTP method to be used
+                        _token: document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'), // Get CSRF token from meta tag
+                        name: document.getElementById('province-name').value, // Province name
+                        region: document.getElementById('province-region').value // Province region
+                    };
+                    console.log(JSON.stringify(formData));
+                    // Use Fetch API to update province data
+                    fetch('/provinces/' + provinceId, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content') // CSRF token for security
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            var editProvinceModal = bootstrap.Modal.getInstance(document.getElementById(
+                                'editProvince'));
+                            editProvinceModal.hide(); // Hide the modal
+                            alert('Province updated successfully!');
+                            location.reload(); // Reload the page to reflect changes
+                        })
+                        .catch(error => {
+                            console.log('Error updating province:', error);
+                            alert('Failed to update province. Please try again.');
+                        });
+                });
+            });
+        </script> --}}
     </x-slot>
 
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Barangays</h4>
+                <h4 class="mb-sm-0">{{ $municity->name }}</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item">Barangays</li>
-                        <li class="breadcrumb-item active">List of Barangay</li>
+                        <li class="breadcrumb-item"><a href="{{ route('provinces.show', $municity->province->id) }}">{{ $municity->province->name }}</a></li>
+                        <li class="breadcrumb-item">{{ $municity->name }}</li>
+                        <li class="breadcrumb-item active">List of Barangays</li>
                     </ol>
                 </div>
 
@@ -92,13 +167,12 @@
                                         </th>
 
                                         <th class="" data-sort="barangay_name">Name</th>
-                                        <th class="" data-sort="municity_name">City/Municipality</th>
-                                        <th class="" data-sort="province_name">Province</th>
+                                        <th class="" data-sort="beneficiary_count">Beneficiaries</th>
                                         <th class="" data-sort="action">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
-                                    @foreach ($barangays as $barangay)
+                                    @foreach ($municity->barangays as $barangay)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
@@ -108,10 +182,7 @@
                                             </th>
                                             <td class="barangay_id" style="display:none;">{{ $barangay->id }}</td>
                                             <td class="barangay_name">{{ $barangay->name }}</td>
-                                            <td class="municity_id" style="display:none;">{{ $barangay->municity->id }}</td>
-                                            <td class="municity_name">{{ $barangay->municity->name }}</td>
-                                            <td class="province_id" style="display:none;">{{ $barangay->municity->province->id }}</td>
-                                            <td class="province_name">{{ $barangay->municity->province->name }}</td>
+                                            <td class="beneficiary_count">{{ $barangay->beneficiaries->count() }}</td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
 
@@ -178,29 +249,32 @@
                                 <form class="tablelist-form" autocomplete="off">
                                     <div class="modal-body">
                                         <input type="hidden" id="barangay_id-field" />
+                                        <input type="hidden" id="municity_id-field" value="{{$municity->id}}"/>
                                         <div class="row g-3">
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="province_id-field" class="form-label">Province</label>
-                                                    <select id="province_id-field" class="form-select" required disabled>
-                                                        @foreach($provinces as $province)
-                                                            <option value="{{ $province->id }}">{{ $province->name }}</option>
-                                                        @endforeach
-                                                    </select>
+
+                                                    <label for="province_name-field"
+                                                        class="form-label">Province</label>
+                                                    <input type="text" id="province_name-field"
+                                                        class="form-control" value="{{ $municity->province->name }}" required
+                                                        disabled />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="municity_id-field" class="form-label">City/Municipality</label>
-                                                    <select id="municity_id-field" class="form-select" required disabled>
-                                                        <option value="">Select City/Municipality</option>
-                                                    </select>
+                                                    <label for="municity_name-field"
+                                                        class="form-label">City/Municipality</label>
+                                                    <input type="text" id="municity_name-field"
+                                                        class="form-control" value="{{ $municity->name }}" required
+                                                        disabled />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div>
+
                                                     <label for="barangay_name-field" class="form-label">Barangay</label>
                                                     <input type="text" id="barangay_name-field"
                                                         class="form-control"

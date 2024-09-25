@@ -152,7 +152,7 @@
                 <div class="card-body">
                     <div>
                         <div class="table-responsive table-card">
-                            <table class="table align-middle" id="customerTable">
+                            <table class="table align-middle" id="provinceTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th scope="col" style="width: 50px;">
@@ -176,8 +176,7 @@
                                                         value="{{$province->id}}">
                                                 </div>
                                             </th>
-                                            <td class="id" style="display:none;"><a href="javascript:void(0);"
-                                                    class="fw-medium link-primary">{{$province->id}}</a></td>
+                                            <td class="province_id" style="display:none;">{{$province->id}}</td>
                                             <td class="province_name">{{$province->name}}</td>
                                             <td class="province_region">{{$province->region}}</td>
                                             <td>
@@ -185,12 +184,12 @@
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="javascript:void(0);"><i
+                                                        <a href="{{ route('provinces.show', $province->id) }}"><i
                                                                 class="ri-eye-fill align-bottom text-muted"></i></a>
                                                     </li>
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                        <a class="edit-item-btn" href="#showModal"
+                                                        <a class="edit-item-btn" href="#showModal" data-id="{{$province->id}}"
                                                             data-bs-toggle="modal"><i
                                                                 class="ri-pencil-fill align-bottom text-muted"></i></a>
                                                     </li>
@@ -198,7 +197,7 @@
                                                         data-bs-trigger="hover" data-bs-placement="top"
                                                         title="Delete">
                                                         <a class="remove-item-btn" data-bs-toggle="modal"
-                                                            href="#deleteRecordModal">
+                                                            href="#deleteRecordModal" data-id="{{$province->id}}">
                                                             <i class="ri-delete-bin-fill align-bottom text-muted"></i>
                                                         </a>
                                                     </li>

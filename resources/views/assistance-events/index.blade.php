@@ -1,38 +1,110 @@
 <x-app-layout>
     <x-slot name="pageTitle">
-       Barangays
+        Assistance Schedule
     </x-slot>
 
     <x-slot name="headerScripts">
         <!-- Sweet Alert css-->
-        <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
     </x-slot>
 
 
     <x-slot name="footerScripts">
         <!-- list.js min js -->
-        <script src="{{ asset('assets/libs/list.js/list.min.js') }}"></script>
-        <script src="{{ asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>
+        <script src="{{asset('assets/libs/list.js/list.min.js')}}"></script>
+        <script src="{{asset('assets/libs/list.pagination.js/list.pagination.min.js')}}"></script>
 
         <!-- Sweet Alerts js -->
-        <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+        <script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
         <!-- crm leads init -->
-        <script src="{{ asset('assets/js/app/barangays.init.js') }}"></script>
+        <script src="{{asset('assets/js/app/assistance-events.init.js')}}"></script>
 
         <!-- App js -->
-        <script src="{{ asset('assets/js/app.js') }}"></script>
+        <script src="{{asset('assets/js/app.js')}}"></script>
+
+       {{--  <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Event listener for edit button click
+                document.querySelectorAll('.edit-item-btn').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        // Find the closest row to the clicked edit button
+                        var row = this.closest('tr');
+
+                        // Retrieve data from the table row
+                        var provinceId = this.getAttribute(
+                            'data-id'); // Province ID from data attribute
+                        var provinceName = row.querySelector('.province-name').textContent
+                            .trim(); // Province name from the row
+                        var provinceRegion = row.querySelector('.province-region').textContent
+                            .trim(); // Province region from the row
+
+                        // Populate the modal fields with the retrieved data
+                        document.getElementById('province-name').value = provinceName;
+                        document.getElementById('province-region').value = provinceRegion;
+
+                        // Store the province ID in a data attribute of the save button or modal
+                        document.getElementById('edit-province-form').setAttribute('data-id',
+                            provinceId);
+
+                        // Show the modal
+                        var editProvinceModal = new bootstrap.Modal(document.getElementById(
+                            'editProvince'));
+                        editProvinceModal.show();
+                    });
+                });
+
+                // Event listener for form submission
+                document.getElementById('edit-province-form').addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    var provinceId = this.getAttribute('data-id'); // Get province ID from data attribute
+
+                    // Prepare form data
+                    var formData = {
+                        _method: 'PUT', // Specify the HTTP method to be used
+                        _token: document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'), // Get CSRF token from meta tag
+                        name: document.getElementById('province-name').value, // Province name
+                        region: document.getElementById('province-region').value // Province region
+                    };
+                    console.log(JSON.stringify(formData));
+                    // Use Fetch API to update province data
+                    fetch('/provinces/' + provinceId, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content') // CSRF token for security
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            var editProvinceModal = bootstrap.Modal.getInstance(document.getElementById(
+                                'editProvince'));
+                            editProvinceModal.hide(); // Hide the modal
+                            alert('Province updated successfully!');
+                            location.reload(); // Reload the page to reflect changes
+                        })
+                        .catch(error => {
+                            console.log('Error updating province:', error);
+                            alert('Failed to update province. Please try again.');
+                        });
+                });
+            });
+        </script> --}}
     </x-slot>
 
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Barangays</h4>
+                <h4 class="mb-sm-0">Assistance Schedules</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item">Barangays</li>
-                        <li class="breadcrumb-item active">List of Barangay</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Assistance</a></li>
+                        <li class="breadcrumb-item active">Schedules</li>
                     </ol>
                 </div>
 
@@ -43,7 +115,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card" id="barangayList">
+            <div class="card" id="assistanceTypeList">
                 <div class="card-header border-0">
 
                     <div class="row g-4 align-items-center">
@@ -55,11 +127,10 @@
                         </div>
                         <div class="col-sm-auto ms-auto">
                             <div class="hstack gap-2">
-                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i
-                                        class="ri-delete-bin-2-line"></i></button>
+                                <button class="btn btn-soft-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
                                 <button type="button" class="btn btn-soft-warning add-btn" data-bs-toggle="modal"
                                     id="create-btn" data-bs-target="#showModal"><i
-                                        class="ri-add-line align-bottom me-1"></i> Add barangay</button>
+                                        class="ri-add-line align-bottom me-1"></i> Create Schedule</button>
                                 {{--  <span class="dropdown">
                                     <button class="btn btn-soft-primary btn-icon fs-14" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="ri-settings-4-line"></i>
@@ -90,46 +161,49 @@
                                                     value="option">
                                             </div>
                                         </th>
+                                        <th class="" data-sort="event_date">Date</th>
+                                        <th class="" data-sort="event_name">Name</th>
+                                        <th class="" data-sort="event_venue">Venue</th>
+                                        <th class="" data-sort="amount">Amount</th>
+                                        <th class="" data-sort="assistance_type_name">Assistance Type</th>
 
-                                        <th class="" data-sort="barangay_name">Name</th>
-                                        <th class="" data-sort="municity_name">City/Municipality</th>
-                                        <th class="" data-sort="province_name">Province</th>
                                         <th class="" data-sort="action">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list form-check-all">
-                                    @foreach ($barangays as $barangay)
+                                    @foreach ($events as $event)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" name="chk_child"
-                                                        value="{{ $barangay->id }}">
+                                                        value="{{$event->id}}">
                                                 </div>
                                             </th>
-                                            <td class="barangay_id" style="display:none;">{{ $barangay->id }}</td>
-                                            <td class="barangay_name">{{ $barangay->name }}</td>
-                                            <td class="municity_id" style="display:none;">{{ $barangay->municity->id }}</td>
-                                            <td class="municity_name">{{ $barangay->municity->name }}</td>
-                                            <td class="province_id" style="display:none;">{{ $barangay->municity->province->id }}</td>
-                                            <td class="province_name">{{ $barangay->municity->province->name }}</td>
+                                            <td class="event_date">@if($event->event_date) {{ \Carbon\Carbon::parse($event->event_date)->format('M d, Y') }} @endif</td>
+                                            <td class="event_name" style="display:none;">{{$event->id}}</td>
+                                            <td class="event_venue">{{$event->event_name}}</td>
+                                            <td class="assistance_type_name">{{$event->venue}}</td>
+                                            <td class="assistance_type_description text-end">{{ number_format($event->amount, 2) }}</td>
+                                            <td class="assistance_type_name">{{$event->assistanceType->name}}</td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
 
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="View">
-                                                        <a href="{{ route('barangays.show', $barangay->id) }}"><i
+                                                        <a href="{{ route('assistance-types.show', $event->id) }}"><i
                                                                 class="ri-eye-fill align-bottom text-muted"></i></a>
                                                     </li>
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="Edit">
-                                                        <a class="edit-item-btn" href="#showModal"
-                                                            data-id="{{ $barangay->id }}" data-bs-toggle="modal"><i
+                                                        <a class="edit-item-btn" href="#showModal" data-id="{{$event->id}}"
+                                                            data-bs-toggle="modal"><i
                                                                 class="ri-pencil-fill align-bottom text-muted"></i></a>
                                                     </li>
                                                     <li class="list-inline-item" data-bs-toggle="tooltip"
-                                                        data-bs-trigger="hover" data-bs-placement="top" title="Delete">
+                                                        data-bs-trigger="hover" data-bs-placement="top"
+                                                        title="Delete">
                                                         <a class="remove-item-btn" data-bs-toggle="modal"
-                                                            href="#deleteRecordModal" data-id="{{ $barangay->id }}">
+                                                            href="#deleteRecordModal" data-id="{{$event->id}}">
                                                             <i class="ri-delete-bin-fill align-bottom text-muted"></i>
                                                         </a>
                                                     </li>
@@ -148,7 +222,7 @@
                                     <h5 class="mt-2">Sorry! No Result Found</h5>
                                     <p class="text-muted mb-0"> We
                                         did not find any
-                                        province for you search.</p>
+                                        assistance type for you search.</p>
                                 </div>
                             </div>
                         </div>
@@ -177,37 +251,53 @@
                                 </div>
                                 <form class="tablelist-form" autocomplete="off">
                                     <div class="modal-body">
-                                        <input type="hidden" id="barangay_id-field" />
+                                        <input type="hidden" id="id-field" />
                                         <div class="row g-3">
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="province_id-field" class="form-label">Province</label>
-                                                    <select id="province_id-field" class="form-select" required disabled>
-                                                        @foreach($provinces as $province)
-                                                            <option value="{{ $province->id }}">{{ $province->name }}</option>
-                                                        @endforeach
+                                                    <label for="event_type-field" class="form-label">Assistance Type</label>
+                                                    <select name="event_type-field" class="form-select" required>
+                                                    @foreach($assistanceTypes as $assistance)
+                                                        <option value="{{$assistance->id}}">{{$assistance->name}}</option>
+                                                    @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="municity_id-field" class="form-label">City/Municipality</label>
-                                                    <select id="municity_id-field" class="form-select" required disabled>
-                                                        <option value="">Select City/Municipality</option>
-                                                    </select>
+                                                    <label for="event_name-field" class="form-label">Event Name</label>
+                                                    <input type="text" id="event_name-field" class="form-control"
+                                                        placeholder="Enter Event Name" required />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div>
-                                                    <label for="barangay_name-field" class="form-label">Barangay</label>
-                                                    <input type="text" id="barangay_name-field"
-                                                        class="form-control"
-                                                        placeholder="Enter Barangay Name" required />
+                                                    <label for="event_venue-field" class="form-label">Venue</label>
+                                                    <input type="text" id="event_venue-field"
+                                                        class="form-control" placeholder="Enter Venue"
+                                                        required />
                                                 </div>
                                             </div>
                                             <!--end col-->
+
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="event_date-field" class="form-label">Date</label>
+                                                    <input type="date" id="event_date-field"
+                                                        class="form-control" placeholder="Enter Date"
+                                                        required />
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+
+                                            <div class="col-lg-12">
+                                                <div>
+                                                    <label for="event_notes-field" class="form-label">Notes</label>
+                                                    <textarea id="event_notes-field" class="form-control" rows="2" required></textarea>
+                                                </div>
+                                            </div>
 
 
 
@@ -218,8 +308,8 @@
                                         <div class="hstack gap-2 justify-content-end">
                                             <button type="button" class="btn btn-light"
                                                 data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-success" id="add-btn">Add
-                                                Barangay</button>
+                                            <button type="submit" class="btn btn-success" id="add-btn">Create
+                                                Schedule</button>
                                         </div>
                                     </div>
                                 </form>
@@ -242,8 +332,8 @@
                                         colors="primary:#25a0e2,secondary:#00bd9d"
                                         style="width:90px;height:90px"></lord-icon>
                                     <div class="mt-4 text-center">
-                                        <h4 class="fs-semibold">You are about to delete a barangay?</h4>
-                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your barangaywill
+                                        <h4 class="fs-semibold">You are about to delete a assistance type ?</h4>
+                                        <p class="text-muted fs-14 mb-4 pt-1">Deleting your assistance type will
                                             remove all of your information from our database.</p>
                                         <div class="hstack gap-2 justify-content-center remove">
                                             <button class="btn btn-link link-primary fw-medium text-decoration-none"

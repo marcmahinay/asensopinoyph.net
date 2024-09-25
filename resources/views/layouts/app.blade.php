@@ -11,21 +11,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{asset("assets/images/favicon.ico")}}">
 
     {{-- Slot for custom styles --}}
     {{ $headerScripts ?? '' }}
 
     <!-- Layout config Js -->
-    <script src="assets/js/layout.js"></script>
+    <script src="{{asset("assets/js/layout.js")}}"></script>
     <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset("assets/css/bootstrap.min.css")}}" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset("assets/css/icons.min.css")}}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset("assets/css/app.min.css")}}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset("assets/css/custom.min.css")}}" rel="stylesheet" type="text/css" />
+
 
 
 </head>
@@ -43,19 +44,19 @@
                         <div class="navbar-brand-box horizontal-logo">
                             <a href="index.html" class="logo logo-dark">
                                 <span class="logo-sm">
-                                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                                    <img src="{{asset("assets/images/logo-sm.png")}}" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="assets/images/logo-dark.png" alt="" height="17">
+                                    <img src="{{asset("assets/images/logo-dark.png")}}" alt="" height="17">
                                 </span>
                             </a>
 
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                                    <img src="{{asset("assets/images/logo-sm.png")}}" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="assets/images/logo-light.png" alt="" height="17">
+                                    <img src="{{asset("assets/images/logo-light.png")}}" alt="" height="17">
                                 </span>
                             </a>
                         </div>
@@ -120,7 +121,7 @@
                             </button>
                         </div>
 
-                        <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
+                        {{-- <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                             <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
                                 id="page-header-notifications-dropdown" data-bs-toggle="dropdown"
                                 data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
@@ -211,7 +212,7 @@
                                             <div
                                                 class="text-reset notification-item d-block dropdown-item position-relative">
                                                 <div class="d-flex">
-                                                    <img src="assets/images/users/avatar-2.jpg"
+                                                    <img src="{{asset("assets/images/users/avatar-2.jpg")}}"
                                                         class="me-3 rounded-circle avatar-xs flex-shrink-0"
                                                         alt="user-pic">
                                                     <div class="flex-grow-1">
@@ -274,7 +275,7 @@
                                             <div
                                                 class="text-reset notification-item d-block dropdown-item position-relative">
                                                 <div class="d-flex">
-                                                    <img src="assets/images/users/avatar-8.jpg"
+                                                    <img src="{{asset("assets/images/users/avatar-8.jpg")}}"
                                                         class="me-3 rounded-circle avatar-xs flex-shrink-0"
                                                         alt="user-pic">
                                                     <div class="flex-grow-1">
@@ -316,7 +317,7 @@
                                         <div data-simplebar style="max-height: 300px;" class="pe-2">
                                             <div class="text-reset notification-item d-block dropdown-item">
                                                 <div class="d-flex">
-                                                    <img src="assets/images/users/avatar-3.jpg"
+                                                    <img src="{{asset("assets/images/users/avatar-3.jpg")}}"
                                                         class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                     <div class="flex-grow-1">
                                                         <a href="#!" class="stretched-link">
@@ -344,7 +345,7 @@
 
                                             <div class="text-reset notification-item d-block dropdown-item">
                                                 <div class="d-flex">
-                                                    <img src="assets/images/users/avatar-2.jpg"
+                                                    <img src="{{asset("assets/images/users/avatar-2.jpg")}}"
                                                         class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                     <div class="flex-grow-1">
                                                         <a href="#!" class="stretched-link">
@@ -373,7 +374,7 @@
 
                                             <div class="text-reset notification-item d-block dropdown-item">
                                                 <div class="d-flex">
-                                                    <img src="assets/images/users/avatar-6.jpg"
+                                                    <img src="{{asset("assets/images/users/avatar-6.jpg")}}"
                                                         class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                     <div class="flex-grow-1">
                                                         <a href="#!" class="stretched-link">
@@ -402,7 +403,7 @@
 
                                             <div class="text-reset notification-item d-block dropdown-item">
                                                 <div class="d-flex">
-                                                    <img src="assets/images/users/avatar-8.jpg"
+                                                    <img src="{{asset("assets/images/users/avatar-8.jpg")}}"
                                                         class="me-3 rounded-circle avatar-xs" alt="user-pic">
                                                     <div class="flex-grow-1">
                                                         <a href="#!" class="stretched-link">
@@ -449,24 +450,23 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="dropdown ms-sm-3 header-item topbar-user">
                             <button type="button" class="btn" id="page-header-user-dropdown"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="d-flex align-items-center">
                                     <img class="rounded-circle header-profile-user"
-                                        src="assets/images/users/avatar-1.jpg" alt="Header Avatar">
+                                        src="{{asset("assets/images/users/avatar-1.jpg")}}" alt="Header Avatar">
                                     <span class="text-start ms-xl-2">
-                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna
-                                            Adame</span>
+                                        <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{Auth::user()->name}}</span>
                                         <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
-                                <h6 class="dropdown-header">Welcome Anna!</h6>
+                                <h6 class="dropdown-header">Welcome {{Auth::user()->name}}!</h6>
                                 <a class="dropdown-item" href="pages-profile.html"><i
                                         class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                         class="align-middle">Profile</span></a>
@@ -559,12 +559,27 @@
     </button>
     <!--end back-to-top-->
 
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/feather-icons/feather.min.js"></script>
-    <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="assets/js/plugins.js"></script>
+
+    <script src="{{asset("assets/libs/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
+    <script src="{{asset("assets/libs/simplebar/simplebar.min.js")}}"></script>
+    <script src="{{asset("assets/libs/node-waves/waves.min.js")}}"></script>
+    <script src="{{asset("assets/libs/feather-icons/feather.min.js")}}"></script>
+    <script src="{{asset("assets/js/pages/plugins/lord-icon-2.1.0.js")}}"></script>
+    {{-- <script src="{{asset("assets/js/plugins.js")}}"></script> --}}
+    <script>
+        (document.querySelectorAll("[toast-list]") ||
+        document.querySelectorAll("[data-choices]") ||
+        document.querySelectorAll("[data-provider]")) &&
+        (document.writeln(
+            `<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/toastify-js'><\/script>`
+        ),
+        document.writeln(
+            `<script type='text/javascript' src='{{asset("assets/libs/choices.js/public/assets/scripts/choices.min.js")}}'><\/script>`
+        ),
+        document.writeln(
+            `<script type='text/javascript' src='{{asset("assets/libs/flatpickr/flatpickr.min.js")}}'><\/script>`
+        ));
+    </script>
 
 
     <!-- JAVASCRIPT -->
