@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('assistance_received', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assistance_event_id')->constrained()->onDelete('cascade');
-            $table->foreignId('beneficiary_id')->constrained()->onDelete('cascade');
+            $table->foreignId('assistance_event_id')->constrained();
+            $table->foreignId('beneficiary_id')->constrained();
             $table->decimal('amount_received', 10, 2)->nullable();
             $table->text('items_received')->nullable();
             $table->dateTime('received_at');
