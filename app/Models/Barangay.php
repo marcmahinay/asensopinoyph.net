@@ -23,4 +23,8 @@ class Barangay extends Model
     {
         return $this->morphMany(AssistanceEventBeneficiary::class, 'beneficiary');
     }
+
+    public function beneficiaries() {
+        return $this->hasMany(Beneficiary::class);
+    }
 }

@@ -14,4 +14,9 @@ class AssistanceType extends Model
         'description',
         'status',
     ];
+
+    public function assistanceEvents()
+    {
+        return $this->hasMany(AssistanceEvent::class);
+    }
 }

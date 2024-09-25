@@ -9,6 +9,8 @@ class AssistanceReceived extends Model
 {
     use HasFactory;
 
+    protected $table = 'assistance_received';
+
     protected $fillable = [
         'assistance_event_id',
         'beneficiary_id',
@@ -33,5 +35,5 @@ class AssistanceReceived extends Model
     {
         return $this->belongsTo(Beneficiary::class);
     }
-    
+
 }

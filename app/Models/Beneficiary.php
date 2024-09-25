@@ -31,6 +31,7 @@ class Beneficiary extends Model
         return $this->hasMany(AssistanceReceived::class);
     }
 
+
     public function assistanceEventBeneficiaries()
     {
         return $this->morphMany(AssistanceEventBeneficiary::class, 'beneficiary');
@@ -39,6 +40,16 @@ class Beneficiary extends Model
     public function voucherCodes()
     {
         return $this->hasMany(VoucherCode::class);
+    }
+
+    public function voucherCodeRedeemedCount()
+    {
+        return $this->voucherCodes()->where('is_redeemed', 1)->count();
+    }
+
+    public function civilStatus()
+    {
+        return $this->belongsTo(CivilStatus::class);
     }
 }
 
