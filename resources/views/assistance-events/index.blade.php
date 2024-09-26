@@ -202,9 +202,9 @@
                                                                 class="ri-pencil-fill align-bottom text-muted"></i></a>
                                                     </li>
                                                     @if(\Carbon\Carbon::parse($event->event_date)->isToday())
-                                                    <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                    <li class="list-inline-item d-block d-sm-none" data-bs-toggle="tooltip"
                                                         data-bs-trigger="hover" data-bs-placement="top" title="Scan QR Code">
-                                                        <a href="{{route('qr.qrScanner')}}" data-id="{{$event->id}}"><i
+                                                        <a href="{{route('qr.qrScanner',$event->id)}}"><i
                                                                 class=" ri-qr-code-line align-bottom text-muted"></i></a>
                                                     </li>
                                                     @endif
