@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/search/barangay', [BarangayController::class, 'search']);
     Route::post('/assistance/cancel', [AssistanceEventController::class, 'cancel'])->name('assistance.cancel');
     Route::post('/assistance/receive', [AssistanceEventController::class, 'receive'])->name('assistance.receive');
-    Route::get('/qr-scanner', [QrCodeController::class, 'qrScanner'])->name('qr.qrScanner');
+    Route::get('/qr-scanner/{event_id}', [QrCodeController::class, 'qrScanner'])->name('qr.qrScanner');
     Route::post('/scan-qr-code', [QrCodeController::class, 'verify'])->name('qr.verify');
 });
 
