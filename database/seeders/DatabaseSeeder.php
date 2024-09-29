@@ -21,16 +21,16 @@ class DatabaseSeeder extends Seeder
         $this->call(CivilStatusSeeder::class);
         $this->call(AssistanceTypeSeeder::class);
         $this->call(AssistanceEventSeeder::class);
-        $this->call(TudelaBalonSeeder::class);
-        $this->call(AssistanceReceivedSeeder::class);
-        $this->call(VoucherSeeder::class);
-        $this->call(VoucherCodeSeeder::class);
+        $this->call(BeneficiaryTudelaSeeder::class);
+        //$this->call(AssistanceReceivedSeeder::class);
+        //$this->call(VoucherSeeder::class);
+        //$this->call(VoucherCodeSeeder::class);
 
 
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@asensopinoyph.net',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('asensoP1n0Y'),
         ]);
     }
 }
