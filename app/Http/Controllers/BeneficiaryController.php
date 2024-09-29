@@ -95,17 +95,18 @@ class BeneficiaryController extends Controller
 
 
         // Check if the beneficiary has received assistance for each event
-        $eventSchedule = $upcomingEvents->map(function ($event) use ($beneficiary) {
+       /*  $eventSchedule = $upcomingEvents->map(function ($event) use ($beneficiary) {
             $assistanceReceived = $beneficiary->assistanceReceived->firstWhere('assistance_event_id', $event->id);
             return [
                 'event' => $event,
                 'received' => $assistanceReceived !== null,
                 'received_at' => $assistanceReceived ? $assistanceReceived->created_at : null,
             ];
-        });
+        }); */
 
         // Return the view with the beneficiary data and event schedule
-        return view('beneficiaries.show', compact('beneficiary', 'eventSchedule'));
+        //return view('beneficiaries.show', compact('beneficiary', 'eventSchedule'));
+        return view('members.showByAsensoId', compact('beneficiary'));
     }
 
     public function cancelAssistance(Beneficiary $beneficiary, Event $event)
