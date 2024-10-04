@@ -140,6 +140,7 @@
         function onScanSuccess(decodedText, decodedResult) {
             // Handle the result here
             document.getElementById('scan-sound').play();
+            document.getElementById('qr-result').classList.remove('alert-success', 'alert-danger');
             document.getElementById('qr-result').innerHTML = `<div>${decodedText}</div>`;
 
             fetch('/scan-qr-code', {
