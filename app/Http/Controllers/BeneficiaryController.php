@@ -93,6 +93,10 @@ class BeneficiaryController extends Controller
         // Load the relationships
         $beneficiary->load('voucherCodes', 'assistanceReceived');
 
+        $upcomingEvents = \App\Models\AssistanceEvent::with('assistanceType') // Load the assistance type relationship
+            ->where('event_date', '=', now()->format('Y-m-d'))
+            ->orderBy('event_date')
+            ->get();
 
         // Check if the beneficiary has received assistance for each event
         $eventSchedule = $upcomingEvents->map(function ($event) use ($beneficiary) {
@@ -105,7 +109,8 @@ class BeneficiaryController extends Controller
         });
 
         // Return the view with the beneficiary data and event schedule
-        return view('beneficiaries.show', compact('beneficiary', 'eventSchedule'));
+       return view('beneficiaries.show', compact('beneficiary', 'eventSchedule'));
+       // return view('members.show', compact('beneficiary'));
     }
 
     public function cancelAssistance(Beneficiary $beneficiary, Event $event)
