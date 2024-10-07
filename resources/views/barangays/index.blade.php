@@ -107,7 +107,7 @@
                                                 </div>
                                             </th>
                                             <td class="barangay_id" style="display:none;">{{ $barangay->id }}</td>
-                                            <td class="barangay_name">{{ $barangay->name }}</td>
+                                            <td class="barangay_name"><a href="{{ route('barangays.show', $barangay->id) }}">{{ $barangay->name }}</a></td>
                                             <td class="municity_id" style="display:none;">{{ $barangay->municity->id }}</td>
                                             <td class="municity_name">{{ $barangay->municity->name }}</td>
                                             <td class="province_id" style="display:none;">{{ $barangay->municity->province->id }}</td>

@@ -109,7 +109,7 @@
                                             </th>
                                             <td class="event_id" style="display:none;">{{$assistanceEvent->id}}</td>
                                             <td class="event_date">{{ $assistanceEvent->event_date ? $assistanceEvent->event_date->format('Y-m-d') : '' }}</td>
-                                            <td class="event_name">{{$assistanceEvent->event_name}}</td>
+                                            <td class="event_name"><a href="{{ route('assistance-events.show', $assistanceEvent->id) }}">{{$assistanceEvent->event_name}}</a></td>
                                             <td class="event_venue">{{$assistanceEvent->venue}}</td>
                                             <td class="event_amount">{{$assistanceEvent->amount}}</td>
                                             <td class="event_notes">{{$assistanceEvent->notes}}</td>

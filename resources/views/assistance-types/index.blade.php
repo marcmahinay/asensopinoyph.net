@@ -177,7 +177,7 @@
                                                 </div>
                                             </th>
                                             <td class="assistance_type_id" style="display:none;">{{$assistanceType->id}}</td>
-                                            <td class="assistance_type_name">{{$assistanceType->name}}</td>
+                                            <td class="assistance_type_name"><a href="{{ route('assistance-types.show', $assistanceType->id) }}" >{{$assistanceType->name}}</a></td>
                                             <td class="assistance_type_description">{{$assistanceType->description}}</td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">

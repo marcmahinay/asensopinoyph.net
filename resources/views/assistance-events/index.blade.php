@@ -182,7 +182,7 @@
                                             <td class="event_date" style="display:none;">{{$event->event_date}}</td>
                                             <td class="event_date_fmt">@if($event->event_date) {{ \Carbon\Carbon::parse($event->event_date)->format('M d, Y') }} @endif</td>
                                             <td class="event_id" style="display:none;">{{$event->id}}</td>
-                                            <td class="event_name">{{$event->event_name}}</td>
+                                            <td class="event_name"><a href="{{ route('assistance-events.show', $event->id) }}">{{$event->event_name}}</a></td>
                                             <td class="event_venue">{{$event->venue}}</td>
                                             <td class="event_amount text-end">{{ number_format($event->amount, 2) }}</td>
                                             <td class="assistance_type_name">{{$event->assistanceType->name}}</td>

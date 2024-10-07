@@ -188,6 +188,7 @@
                                             </td>
                                             <td class="beneficiary_name">
                                                 <div class="d-flex align-items-center">
+                                                    <a href="{{ route('beneficiaries.show',$beneficiary->id) }}" class="d-flex align-items-center" style="text-decoration: none;">
                                                     <div class="flex-shrink-0">
                                                         <img src="{{ $beneficiary->image_path ? asset($beneficiary->image_path) : 'https://via.placeholder.com/128?text=No+Image' }}"
                                                             alt=""
@@ -197,6 +198,7 @@
                                                         {{ ucfirst(strtolower($beneficiary->last_name)) }}
                                                         , {{ ucfirst(strtolower($beneficiary->first_name)) }}
                                                         {{ substr($beneficiary->middle_name, 0, 1) . '.' }}</div>
+                                                    </a>
                                                 </div>
                                             </td>
                                             <td class="asenso_id">{{ $beneficiary->asenso_id }}</td>

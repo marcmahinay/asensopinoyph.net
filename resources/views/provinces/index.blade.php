@@ -177,7 +177,7 @@
                                                 </div>
                                             </th>
                                             <td class="province_id" style="display:none;">{{$province->id}}</td>
-                                            <td class="province_name">{{$province->name}}</td>
+                                            <td class="province_name"><a href="{{ route('provinces.show', $province->id) }}">{{$province->name}}</a></td>
                                             <td class="province_region">{{$province->region}}</td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">
