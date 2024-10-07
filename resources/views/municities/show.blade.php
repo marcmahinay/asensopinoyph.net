@@ -181,7 +181,7 @@
                                                 </div>
                                             </th>
                                             <td class="barangay_id" style="display:none;">{{ $barangay->id }}</td>
-                                            <td class="barangay_name">{{ $barangay->name }}</td>
+                                            <td class="barangay_name"><a href="{{ route('barangays.show', $barangay->id) }}">{{ $barangay->name }}</a></td>
                                             <td class="beneficiary_count">{{ $barangay->beneficiaries->count() }}</td>
                                             <td>
                                                 <ul class="list-inline hstack gap-2 mb-0">

@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         beneficiary_id: beneficiary.id,
                         beneficiary_name: `
                             <div class="d-flex align-items-center">
+                               <a href="/beneficiaries/${beneficiary.id}" id="beneficiary-link-${beneficiary.id}" class="d-flex align-items-center" style="text-decoration: none;">
                                 <div class="flex-shrink-0">
                                     <img src="${
                                         beneficiary.image_path ||
@@ -102,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                              : ""
                                      }
                                 </div>
+                                </a>
                             </div>`,
                         barangay_name: `${beneficiary.barangay.name}, ${beneficiary.barangay.municity.name}, ${beneficiary.barangay.municity.province.name}`,
                         asenso_id: beneficiary.asenso_id,
